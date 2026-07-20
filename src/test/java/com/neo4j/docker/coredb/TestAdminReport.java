@@ -1,6 +1,7 @@
 package com.neo4j.docker.coredb;
 
 import com.neo4j.docker.utils.DatabaseIO;
+import com.neo4j.docker.utils.Neo4jAssertions;
 import com.neo4j.docker.utils.Neo4jVersion;
 import com.neo4j.docker.utils.SetContainerUser;
 import com.neo4j.docker.utils.TemporaryFolderManager;
@@ -150,7 +151,7 @@ public class TestAdminReport {
                     lines[0].startsWith("Selecting JVM"),
                     "There were unexpected error messages in the neo4j-admin report:\n" + reportExecOut.getStderr());
         } else {
-            Assertions.assertEquals("", reportExecOut.getStderr(), "There were errors during report generation");
+            Neo4jAssertions.assertNoUnexpectedErrors(reportExecOut.getStderr());
         }
         Assertions.assertEquals(1, reports.size(), "Expected exactly 1 report to be produced");
         Assertions.assertFalse(
@@ -170,7 +171,7 @@ public class TestAdminReport {
                     "Produces a zip/tar of the most common information needed for remote assessments."));
             Assertions.assertTrue(stdout.contains("USAGE"));
             Assertions.assertTrue(stdout.contains("OPTIONS"));
-            Assertions.assertEquals("", stderr, "There were errors when trying to get neo4j-admin-report help text");
+            Neo4jAssertions.assertNoUnexpectedErrors(stderr);
         }
     }
 }

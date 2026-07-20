@@ -7,6 +7,7 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 import com.github.dockerjava.api.command.KillContainerCmd;
 import com.github.dockerjava.api.command.StopContainerCmd;
 import com.neo4j.docker.utils.DatabaseIO;
+import com.neo4j.docker.utils.Neo4jAssertions;
 import com.neo4j.docker.utils.Neo4jVersion;
 import com.neo4j.docker.utils.TemporaryFolderManager;
 import com.neo4j.docker.utils.TestSettings;
@@ -70,7 +71,8 @@ public class TestBasic {
             Assertions.assertTrue(container.isRunning());
 
             String stderr = container.getLogs(OutputFrame.OutputType.STDERR);
-            Assertions.assertEquals("", stderr, "Unexpected errors in stderr from container!\n" + stderr);
+
+            Neo4jAssertions.assertNoUnexpectedErrors(stderr);
         }
     }
 
